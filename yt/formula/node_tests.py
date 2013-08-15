@@ -1,6 +1,7 @@
 """
 Tests for the node formula
 """
+import os
 import tempfile
 import shutil
 
@@ -29,7 +30,7 @@ packages =
 """
 
 
-class NodeFormulaTests(object):
+class TestNodeFormula(object):
     """
     Run node.js formula tests
     """
@@ -40,10 +41,14 @@ class NodeFormulaTests(object):
                                                    target_config=target_config,
                                                    mock_directory=False,
                                                    root=self.temp_dir)
+        self.directory = self.environment.directory
 
     def teardown(self):
         shutil.rmtree(self.temp_dir)
 
     def test_install(self):
+        self.environment.warmup()
         self.environment.run_feature("install", 'sync')
-        assert 
+        assert os.path.exists(self.environment.directory.install_directory('install'))
+        assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'node'))
+        assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'npm'))

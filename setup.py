@@ -13,7 +13,7 @@ setup(name='yt.formula.node',
       author_email='yusuke@yusuketsutsumi.com',
       url='http://github.com/toumorokoshi/yt.formula.node',
       packages=['yt', 'yt.formula'],
-      install_requires=['sprinter>=0.7'],
+      install_requires=['sprinter>=0.8'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Operating System :: MacOS',
