@@ -20,13 +20,11 @@ target_config = """
 formula = yt.formula.node
 version = 0.10.16
 packages =
-  grunt-cli@~0.4.1
+  grunt-cli
 
 [update]
 formula = yt.formula.node
 version = 0.10.16
-packages =
-  grunt-cli@0.4.2
 """
 
 
@@ -48,7 +46,17 @@ class TestNodeFormula(object):
 
     def test_install(self):
         self.environment.warmup()
-        self.environment.run_feature("install", 'sync')
+        self.environment.instantiate_features()
+        self.environment.run_feature('install', 'sync')
         assert os.path.exists(self.environment.directory.install_directory('install'))
         assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'node'))
         assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'npm'))
+        assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'grunt'))
+
+    def skip_update(self):
+        self.environment.warmup()
+        self.environment.instantiate_features()
+        self.environment.run_feature('update', 'install')
+        self.environment.run_feature('update', 'sync')
+        assert os.path.exists(self.environment.directory.install_directory('update'))
+        assert not os.path.exists(os.path.join(self.environment.directory.install_directory('update'), 'bin', 'grunt'))

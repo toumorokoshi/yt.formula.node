@@ -43,7 +43,8 @@ class NodeFormula(FormulaBase):
 
     def _link_executables(self):
         """ link the executables in a directory """
-        self.directory.clear_feature_symlinks(self.feature_name)
+        if self.source:
+            self.directory.clear_feature_symlinks(self.feature_name)
         node_bin_path = os.path.join(self.directory.install_directory(self.feature_name), 'bin')
         for executable in os.listdir(node_bin_path):
             self.logger.debug("Symlinking node program %s..." % executable)
@@ -54,20 +55,20 @@ class NodeFormula(FormulaBase):
         if not self.source or (self.source.get('packages', '') != self.target.get('packages', '')):
             remove_packages = []
             install_packages = []
-            if self.source.has('packages'):
-                for package in self.source.get('packages').split('\n'):
-                    remove_packages += package.strip()
-            if self.target.has('packages'):
-                for package in self.source.get('packages').split('\n'):
+            if self.source and self.source.has('packages'):
+                for package in self.source.get('packages').strip().split('\n'):
+                    remove_packages.append(package.strip())
+            if self.target and self.target.has('packages'):
+                for package in self.target.get('packages').strip().split('\n'):
                     package = package.strip()
                     if package in remove_packages:
                         remove_packages.remove(package)
-                    install_packages += package
+                    install_packages.append(package)
             for package in remove_packages:
-                lib.call("bin/npm uninstall %s" % package,
+                lib.call("bin/npm uninstall --verbose %s" % package,
                          cwd=self.directory.install_directory(self.feature_name))
             for package in install_packages:
-                lib.call("bin/npm install -sg %s" % package,
+                lib.call("bin/npm install --verbose -sg %s" % package,
                          cwd=self.directory.install_directory(self.feature_name))
                 
     def _system_info(self):
