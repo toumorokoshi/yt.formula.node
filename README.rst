@@ -6,7 +6,7 @@ yt.formula.node
    :alt: build status
    :target: https://travis-ci.org/toumorokoshi/yt.formula.node
 
-yt.formula.node is a `sprinter<http://github.com/toumorokoshi/sprinter>`_ formula for installing node.js executables and npm packages
+yt.formula.node is a `sprinter <http://github.com/toumorokoshi/sprinter>`_ formula for installing node.js executables and npm packages
 
 Example usage
 -------------
