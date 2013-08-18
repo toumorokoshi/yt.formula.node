@@ -27,10 +27,12 @@ class NodeFormula(FormulaBase):
         FormulaBase.install(self)
 
     def update(self):
+        fresh = False
         if self.source.get('version') != self.target.get('version'):
             self.directory.remove_feature(self.feature_name)
             self._install_node()
-        self._install_packages()
+            fresh = True
+        self._install_packages(fresh=fresh)
         self._link_executables()
         FormulaBase.update(self)
 
@@ -50,12 +52,12 @@ class NodeFormula(FormulaBase):
             self.logger.debug("Symlinking node program %s..." % executable)
             self.directory.symlink_to_bin(executable, os.path.join(node_bin_path, executable))
 
-    def _install_packages(self):
+    def _install_packages(self, fresh=False):
         """ Install and resolve the required npm packages """
         if not self.source or (self.source.get('packages', '') != self.target.get('packages', '')):
             remove_packages = []
             install_packages = []
-            if self.source and self.source.has('packages'):
+            if self.source and self.source.has('packages') and not fresh:
                 for package in self.source.get('packages').strip().split('\n'):
                     remove_packages.append(package.strip())
             if self.target and self.target.has('packages'):
