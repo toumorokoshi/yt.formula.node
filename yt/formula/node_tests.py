@@ -38,6 +38,7 @@ class TestNodeFormula(object):
         self.environment = create_mock_environment(source_config=source_config,
                                                    target_config=target_config,
                                                    mock_directory=False,
+                                                   mock_system=False,
                                                    root=self.temp_dir)
         self.directory = self.environment.directory
 
