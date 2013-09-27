@@ -7,6 +7,7 @@ version = 0.10.16
 packages =
   grunt-cli@~0.4.1
 """
+from __future__ import unicode_literals
 import os
 
 from sprinter.formulabase import FormulaBase
