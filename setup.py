@@ -23,6 +23,8 @@ setup(name='yt.formula.node',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.3'
       ],
       entry_points={},
       tests_require=['mock>=1.0.1', 'nose>=1.3.0', 'httpretty>=0.6.1'],
