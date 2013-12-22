@@ -5,3 +5,6 @@ eggs/
 yt.formula.node.egg-info/
 yt/__pycache__/
 yt/formula/__pycache__/
+*.pyc
+*.egg
+dist/

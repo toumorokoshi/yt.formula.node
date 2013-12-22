@@ -10,7 +10,7 @@ packages =
 from __future__ import unicode_literals
 import os
 
-from sprinter.formulabase import FormulaBase
+from sprinter.formula.base import FormulaBase
 from sprinter import lib
 
 binary_url_template = "http://nodejs.org/dist/v{version}/node-v{version}-{os}-{architecture}.tar.gz"
