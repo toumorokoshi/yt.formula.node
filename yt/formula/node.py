@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 import os
 
 from sprinter.formula.base import FormulaBase
+from sprinter.lib import system
 from sprinter import lib
 
 binary_url_template = "http://nodejs.org/dist/v{version}/node-v{version}-{os}-{architecture}.tar.gz"
@@ -79,8 +80,8 @@ class NodeFormula(FormulaBase):
         manifest = self.target or self.source
         return {
             'version': manifest.get('version'),
-            'os': 'darwin' if self.system.isOSX() else 'linux',
-            'architecture': 'x64' if self.system.is64bit() else 'x86'
+            'os': 'darwin' if system.is_osx() else 'linux',
+            'architecture': 'x64' if system.is_64_bit() else 'x86'
         }
 
     def validate(self):

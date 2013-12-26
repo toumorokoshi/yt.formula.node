@@ -6,7 +6,7 @@ import os
 import tempfile
 import shutil
 
-from sprinter.testtools import create_mock_environment
+from sprinter.testtools import FormulaTest
 
 source_config = """
 [update]
@@ -29,26 +29,15 @@ version = 0.10.16
 """
 
 
-class TestNodeFormula(object):
+class TestNodeFormula(FormulaTest):
     """
     Run node.js formula tests
     """
-
     def setup(self):
-        self.temp_dir = tempfile.mkdtemp()
-        self.environment = create_mock_environment(source_config=source_config,
-                                                   target_config=target_config,
-                                                   mock_directory=False,
-                                                   mock_system=False,
-                                                   root=self.temp_dir)
-        self.directory = self.environment.directory
-
-    def teardown(self):
-        shutil.rmtree(self.temp_dir)
+        super(TestNodeFormula, self).setup(source_config=source_config,
+                                           target_config=target_config)
 
     def test_install(self):
-        self.environment.warmup()
-        self.environment.instantiate_features()
         self.environment.run_feature('install', 'sync')
         assert os.path.exists(self.environment.directory.install_directory('install'))
         assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'node'))
@@ -56,8 +45,6 @@ class TestNodeFormula(object):
         assert os.path.exists(os.path.join(self.environment.directory.install_directory('install'), 'bin', 'grunt'))
 
     def skip_update(self):
-        self.environment.warmup()
-        self.environment.instantiate_features()
         self.environment.run_feature('update', 'install')
         self.environment.run_feature('update', 'sync')
         assert os.path.exists(self.environment.directory.install_directory('update'))
