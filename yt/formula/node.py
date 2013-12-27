@@ -4,6 +4,7 @@ Installs node.js
 [node]
 formula = yt.formula.node
 version = 0.10.16
+global_npm_root = /usr/local
 packages =
   grunt-cli@~0.4.1
 """
@@ -19,7 +20,7 @@ binary_url_template = "http://nodejs.org/dist/v{version}/node-v{version}-{os}-{a
 
 class NodeFormula(FormulaBase):
 
-    valid_options = FormulaBase.valid_options + ['packages']
+    valid_options = FormulaBase.valid_options + ['packages', 'global_npm_root']
     required_options = FormulaBase.required_options + ['version']
 
     def install(self):
@@ -87,8 +88,11 @@ class NodeFormula(FormulaBase):
         }
 
     def _configure_npmrc(self):
-        cwd = self.directory.install_directory(self.feature_name)
-        lib.call("lib/node_modules/npm/configure --prefix={0}".format(cwd))
+        arguments = ""
+        if self.target.has('global_npm_root'):
+            global_npm_root = os.path.abspath(os.path.expanduser(self.target.get('global_npm_root')))
+            arguments += " --prefix={0}".format(global_npm_root)
+        lib.call("lib/node_modules/npm/configure {0}".format(arguments))
 
     def validate(self):
         FormulaBase.validate(self)
