@@ -75,7 +75,7 @@ class NodeFormula(FormulaBase):
                 lib.call("bin/npm uninstall --verbose -g %s --prefix %s" % (package, cwd),
                          cwd=cwd)
             for package in install_packages:
-                lib.call("bin/npm install --verbose -sg %s --prefix %s" % (package, cwd),
+                lib.call("bin/npm install --verbose -sg %s --prefix %s --production" % (package, cwd),
                          cwd=cwd)
                 
     def _system_info(self):
