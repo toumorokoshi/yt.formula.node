@@ -92,7 +92,8 @@ class NodeFormula(FormulaBase):
         if self.target.has('global_npm_root'):
             global_npm_root = os.path.abspath(os.path.expanduser(self.target.get('global_npm_root')))
             arguments += " --prefix={0}".format(global_npm_root)
-        lib.call("lib/node_modules/npm/configure {0}".format(arguments))
+        lib.call("lib/node_modules/npm/configure {0}".format(arguments),
+                 cwd = self.directory.install_directory(self.feature_name))
 
     def validate(self):
         FormulaBase.validate(self)
