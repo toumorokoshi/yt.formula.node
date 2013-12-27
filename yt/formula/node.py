@@ -44,6 +44,7 @@ class NodeFormula(FormulaBase):
         self.logger.debug("Downloading and extracting node from %s..." % binary_url)
         lib.extract_targz(binary_url, self.directory.install_directory(self.feature_name),
                           remove_common_prefix=True)
+        self._configure_npmrc()
 
     def _link_executables(self):
         """ link the executables in a directory """
@@ -68,12 +69,13 @@ class NodeFormula(FormulaBase):
                     if package in remove_packages:
                         remove_packages.remove(package)
                     install_packages.append(package)
+            cwd = self.directory.install_directory(self.feature_name)
             for package in remove_packages:
-                lib.call("bin/npm uninstall --verbose %s" % package,
-                         cwd=self.directory.install_directory(self.feature_name))
+                lib.call("bin/npm uninstall --verbose -g %s --prefix %s" % (package, cwd),
+                         cwd=cwd)
             for package in install_packages:
-                lib.call("bin/npm install --verbose -sg %s" % package,
-                         cwd=self.directory.install_directory(self.feature_name))
+                lib.call("bin/npm install --verbose -sg %s --prefix %s" % (package, cwd),
+                         cwd=cwd)
                 
     def _system_info(self):
         """ return info about the system """
@@ -83,6 +85,10 @@ class NodeFormula(FormulaBase):
             'os': 'darwin' if system.is_osx() else 'linux',
             'architecture': 'x64' if system.is_64_bit() else 'x86'
         }
+
+    def _configure_npmrc(self):
+        cwd = self.directory.install_directory(self.feature_name)
+        lib.call("lib/node_modules/npm/configure --prefix={0}".format(cwd))
 
     def validate(self):
         FormulaBase.validate(self)
