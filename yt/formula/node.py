@@ -33,8 +33,13 @@ class NodeFormula(FormulaBase):
         fresh = False
         if self.source.get('version') != self.target.get('version'):
             self.directory.remove_feature(self.feature_name)
-            self._install_node()
             fresh = True
+        if not os.path.exists(
+                self.directory.install_directory(self.feature_name)
+        ):
+            fresh = True
+        if fresh:
+            self._install_node()
         self._install_packages(fresh=fresh)
         self._link_executables()
         FormulaBase.update(self)
@@ -77,7 +82,7 @@ class NodeFormula(FormulaBase):
             for package in install_packages:
                 lib.call("bin/npm install --verbose -sg %s --prefix %s --production" % (package, cwd),
                          cwd=cwd)
-                
+
     def _system_info(self):
         """ return info about the system """
         manifest = self.target or self.source
