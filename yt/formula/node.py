@@ -25,8 +25,8 @@ class NodeFormula(FormulaBase):
 
     def install(self):
         self._install_node()
-        self._install_packages()
         self._link_executables()
+        self._install_packages()
         FormulaBase.install(self)
 
     def update(self):
@@ -40,8 +40,8 @@ class NodeFormula(FormulaBase):
             fresh = True
         if fresh:
             self._install_node()
-        self._install_packages(fresh=fresh)
         self._link_executables()
+        self._install_packages(fresh=fresh)
         FormulaBase.update(self)
 
     def _install_node(self):
