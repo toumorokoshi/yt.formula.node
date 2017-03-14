@@ -8,3 +8,8 @@ yt/formula/__pycache__/
 *.pyc
 *.egg
 dist/
+.Python
+.coverage
+.uranium
+include
+lib
