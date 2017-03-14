@@ -6,7 +6,7 @@ except:
     from distutils.core import setup
 
 setup(name='yt.formula.node',
-      version='0.0.3',
+      version='0.0.4',
       description='A sprinter formula installing node.js',
       long_description=open('README.rst').read(),
       author='Yusuke Tsutsumi',
